@@ -165,9 +165,9 @@ class AddRecordWindow(QWidget):
         self.layout.addWidget(self.room_combo)
 
         self.add_fields([
-            ("dop_mesto", "Доп. место (чекбокс)"),
-            ("zavtrak", "Завтрак (чекбокс)"),
-            ("uzhin", "Ужин (чекбокс)")
+            ("dop_mesto", "Доп. место"),
+            ("zavtrak", "Завтрак"),
+            ("uzhin", "Ужин")
         ])
 
     def add_fields(self, fields):
