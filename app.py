@@ -250,15 +250,22 @@ class GraphWindow(QWidget):
             ax.pie([free, busy], labels=["Свободно", "Занято"], autopct='%1.1f%%')
         
         elif title == "Бронирования":
+            # Получаем данные о бронированиях по датам
             bookings = session.query(
-                KategoriyaNomera.nazvanie,
+                Bronirovanie.data_zaezda,
                 func.count(Bronirovanie.id_bronirovaniya)
-            ).join(Bronirovanie.nomer).join(Nomer.kategoriya
-            ).group_by(KategoriyaNomera.nazvanie).all()
+            ).group_by(Bronirovanie.data_zaezda).order_by(Bronirovanie.data_zaezda).all()
             
-            names = [b[0] for b in bookings]
+            dates = [b[0] for b in bookings]
             counts = [b[1] for b in bookings]
-            ax.bar(names, counts)
+            
+            # Строим линейный график
+            ax.plot(dates, counts, marker='o')
+            ax.set_xlabel("Дата")
+            ax.set_ylabel("Количество бронирований")
+            
+            # Форматируем даты на оси X
+            plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
         
         elif title == "Услуги":
             services = session.query(
@@ -271,6 +278,7 @@ class GraphWindow(QWidget):
             ax.bar(names, prices)
 
         ax.set_title(title)
+        self.canvas.figure.tight_layout()
         self.canvas.draw()
 
 class MainWindow(QWidget):
